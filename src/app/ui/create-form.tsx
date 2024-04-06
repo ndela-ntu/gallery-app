@@ -33,10 +33,10 @@ export default function CreateForm({
     }
 
     return () => {};
-  }, [state.success, state.items]);
+  }, [state]);
 
   return (
-    <form key="new-item" action={dispatch} className="p-8 m-5">
+    <form action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <div className="flex items-center justify-center relative w-[75%]">
@@ -78,8 +78,8 @@ export default function CreateForm({
         <div className="divider"></div> 
         <div className="px-9" id="url-error" aria-live="polite" aria-atomic="true">
           {state.errors?.file &&
-            state.errors.file.map((error: string) => (
-              <p className="text-sm text-red-500">{error}</p>
+            state.errors.file.map((error: string, i) => (
+              <p key={i} className="text-sm text-red-500">{error}</p>
             ))}
         </div>
         <div className="card-body" >
@@ -96,8 +96,8 @@ export default function CreateForm({
           </label>
           <div id="name-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name &&
-              state.errors.name.map((error: string) => (
-                <p className="text-sm text-red-500">{error}</p>
+              state.errors.name.map((error: string, i) => (
+                <p key={i} className="text-sm text-red-500">{error}</p>
               ))}
           </div>
           <div className="divider"></div> 
@@ -112,8 +112,8 @@ export default function CreateForm({
           </label>
           <div id="description-error" aria-live="polite" aria-atomic="true">
             {state.errors?.description &&
-              state.errors.description.map((error: string) => (
-                <p className="text-sm text-red-500">{error}</p>
+              state.errors.description.map((error: string, i) => (
+                <p key={i} className="text-sm text-red-500">{error}</p>
               ))}
           </div>
           <div className="divider"></div> 

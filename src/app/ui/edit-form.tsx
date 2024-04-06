@@ -37,10 +37,10 @@ export default function EditForm({
     }
 
     return () => {};
-  }, [state.success, state.items]);
+  }, [state]);
 
   return (
-    <form key={item.id} action={dispatch} className="p-8 m-5">
+    <form action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <div className="flex items-center justify-center relative w-[75%]">
@@ -91,8 +91,8 @@ export default function EditForm({
           </label>
           <div id="name-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name &&
-              state.errors.name.map((error: string) => (
-                <p className="text-sm text-red-500">{error}</p>
+              state.errors.name.map((error: string, i) => (
+                <p key={i} className="text-sm text-red-500">{error}</p>
               ))}
           </div>
           <div className="divider"></div> 
@@ -108,8 +108,8 @@ export default function EditForm({
           </label>
           <div id="description-error" aria-live="polite" aria-atomic="true">
             {state.errors?.description &&
-              state.errors.description.map((error: string) => (
-                <p className="text-sm text-red-500">{error}</p>
+              state.errors.description.map((error: string, i) => (
+                <p key={i} className="text-sm text-red-500">{error}</p>
               ))}
           </div>
           <div className="divider"></div> 

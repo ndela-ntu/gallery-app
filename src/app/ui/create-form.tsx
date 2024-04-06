@@ -33,7 +33,7 @@ export default function CreateForm({
     }
 
     return () => {};
-  }, [state]);
+  }, [state.success, state.items, onSuccessAdd]);
 
   return (
     <form action={dispatch} className="p-8 m-5">

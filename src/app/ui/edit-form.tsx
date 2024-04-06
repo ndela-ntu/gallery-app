@@ -37,7 +37,7 @@ export default function EditForm({
     }
 
     return () => {};
-  }, [state]);
+  }, [state, onSuccessSave]);
 
   return (
     <form action={dispatch} className="p-8 m-5">

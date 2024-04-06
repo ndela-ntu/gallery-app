@@ -1,42 +1,42 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useFormState } from "react-dom";
-import { TShirtState, createTShirt } from "../lib/actions";
-import { TShirt } from "../lib/definitions";
+import { ItemState, createItem } from "../lib/actions";
+import { Item } from "../lib/definitions";
 
-export default function CreateTShirtForm({
+export default function CreateForm({
   onCancel,
   onSuccessAdd,
-  tShirts,
+  items,
 }: {
   onCancel: () => void;
-  onSuccessAdd: (success: boolean, tShirts: TShirt[]) => void;
-  tShirts: TShirt[];
+  onSuccessAdd: (success: boolean, items: Item[]) => void;
+  items: Item[];
 }) {
   const initialState = {
     message: null,
     errors: {},
     success: false,
-    tShirts: tShirts,
+    items: items,
   };
-  const [state, dispatch] = useFormState<TShirtState, FormData>(
-    createTShirt,
+  const [state, dispatch] = useFormState<ItemState, FormData>(
+    createItem,
     initialState
   );
   const [file, setFile] = useState("");
 
   useEffect(() => {
     if (state.success) {
-      onSuccessAdd(true, state.tShirts);
+      onSuccessAdd(true, state.items);
     } else {
-      onSuccessAdd(false, state.tShirts);
+      onSuccessAdd(false, state.items);
     }
 
     return () => {};
   }, [state.success]);
 
   return (
-    <form action={dispatch}>
+    <form action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <div className="flex items-center justify-center relative w-[75%]">
@@ -50,7 +50,7 @@ export default function CreateTShirtForm({
               >
                 <Image
                   src={file}
-                  alt="Picture of the author"
+                  alt="Picture of the item"
                   sizes="250px"
                   fill
                   style={{
@@ -75,20 +75,21 @@ export default function CreateTShirtForm({
             />
           </div>
         </figure>
-        <div id="url-error" aria-live="polite" aria-atomic="true">
+        <div className="divider"></div> 
+        <div className="px-9" id="url-error" aria-live="polite" aria-atomic="true">
           {state.errors?.file &&
             state.errors.file.map((error: string) => (
-              <p className="mt-2 text-sm text-red-500">{error}</p>
+              <p className="text-sm text-red-500">{error}</p>
             ))}
         </div>
-        <div className="card-body">
-          <label htmlFor="name">
+        <div className="card-body" >
+          <label htmlFor="name" className="pb-4">
             <span>Name:</span>
             <input
               id="name"
               name="name"
               type="text"
-              placeholder="Name of t-shirt..."
+              placeholder="Name of item..."
               className="input input-bordered w-full max-w-xs"
               aria-describedby="name-error"
             />
@@ -96,25 +97,26 @@ export default function CreateTShirtForm({
           <div id="name-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name &&
               state.errors.name.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500">{error}</p>
+                <p className="text-sm text-red-500">{error}</p>
               ))}
           </div>
-          <label>
+          <div className="divider"></div> 
+          <label className="flex flex-col">
             <span>Description:</span>
-            <input
+            <textarea
               id="description"
               name="description"
-              type="text"
-              placeholder="Description of t-shirt..."
-              className="input input-bordered w-full max-w-xs"
-            />
+              className="textarea textarea-bordered"
+              placeholder="Description of item..."
+            ></textarea>
           </label>
           <div id="description-error" aria-live="polite" aria-atomic="true">
             {state.errors?.description &&
               state.errors.description.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500">{error}</p>
+                <p className="text-sm text-red-500">{error}</p>
               ))}
           </div>
+          <div className="divider"></div> 
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={onCancel}>
               Cancel

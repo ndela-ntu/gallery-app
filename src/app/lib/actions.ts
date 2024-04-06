@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { TShirt } from "./definitions";
+import { Item } from "./definitions";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -16,10 +16,10 @@ const FormSchema = z.object({
   description: z.string().min(1, { message: "Description is required" }),
 });
 
-const CreateTShirt = FormSchema.omit({ id: true });
-const UpdateTShirt = FormSchema.omit({ id: true });
+const CreateItem = FormSchema.omit({ id: true });
+const UpdateItem = FormSchema.omit({ id: true });
 
-export type TShirtState = {
+export type ItemState = {
   errors?: {
     file?: string[];
     name?: string[];
@@ -27,60 +27,60 @@ export type TShirtState = {
   };
   message?: string | null;
   success?: boolean;
-  tShirts: TShirt[];
+  items: Item[];
   editId?: string;
 };
 
-export async function deleteTShirt(
-  prevState: TShirtState,
+export async function deleteItem(
+  prevState: ItemState,
   formData: FormData
 ) {}
 
-export async function createTShirt(prevState: TShirtState, formData: FormData) {
-  const validatedFields = CreateTShirt.safeParse({
+export async function createItem(prevState: ItemState, formData: FormData) {
+  const validatedFields = CreateItem.safeParse({
     file: formData.get("url"),
     name: formData.get("name"),
     description: formData.get("description"),
   });
 
   if (!validatedFields.success) {
-    return <TShirtState>{
+    return <ItemState>{
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing Fields. Failed to Create Invoice",
       success: false,
-      tShirts: prevState.tShirts,
+      items: prevState.items,
     };
   }
 
   try {
     const { file, name, description } = validatedFields.data;
 
-    let newTShirts = prevState.tShirts?.concat({
+    let newItems = prevState.items?.concat({
       id: uuidv4(),
       file: file,
       name: name,
       description: description,
     });
 
-    return <TShirtState>{
-      message: "Successfully loaded a new T-shirt",
+    return <ItemState>{
+      message: "Successfully loaded a new item",
       errors: {},
       success: true,
-      tShirts: newTShirts,
+      items: newItems,
     };
   } catch (error) {
-    return <TShirtState>{
+    return <ItemState>{
       message: "Database Error: Failed to Create Invoice.",
       errors: error,
       success: false,
-      tShirts: prevState.tShirts,
+      items: prevState.items,
     };
   }
 }
 
-export async function updateTShirt(prevState: TShirtState, formData: FormData) {
-  let tShirtFile = prevState.tShirts.find(
-    (tShirt) => tShirt.id == prevState.editId
+export async function updateItem(prevState: ItemState, formData: FormData) {
+  let itemFile = prevState.items.find(
+    (item) => item.id == prevState.editId
   )?.file;
 
   let formDataFile = formData.get('url');
@@ -89,51 +89,51 @@ export async function updateTShirt(prevState: TShirtState, formData: FormData) {
   if (formDataFile instanceof File && formDataFile.size > 0) {
     file = formDataFile;
   }else {
-    file = tShirtFile;
+    file = itemFile;
   }
   
-  const validatedFields = UpdateTShirt.safeParse({
+  const validatedFields = UpdateItem.safeParse({
     file: file,
     name: formData.get("name"),
     description: formData.get("description"),
   });
 
   if (!validatedFields.success) {
-    return <TShirtState>{
+    return <ItemState>{
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing Fields. Failed to create invoice",
       success: false,
-      tShirts: prevState.tShirts,
+      items: prevState.items,
     };
   }
 
   try {
     const { file, name, description } = validatedFields.data;
 
-    let newTShirts = prevState.tShirts?.map((tShirt) => {
-      if (tShirt.id == prevState.editId) {
-        return <TShirt>{
+    let newItems = prevState.items?.map((item) => {
+      if (item.id == prevState.editId) {
+        return <Item>{
           file: file,
           name: name,
           description: description,
         };
       }
 
-      return tShirt;
+      return item;
     });
 
-    return <TShirtState>{
-      message: "Successfully updated a T-shirt",
+    return <ItemState>{
+      message: "Successfully updated a item",
       errors: {},
       success: true,
-      tShirts: newTShirts,
+      items: newItems,
     };
   } catch (error) {
-    return <TShirtState>{
+    return <ItemState>{
       message: "Database Error: Failed to update gallery",
       errors: error,
       success: false,
-      tShirts: prevState.tShirts,
+      items: prevState.items,
     };
   }
 }

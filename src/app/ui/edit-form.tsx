@@ -1,46 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { TShirt } from "../lib/definitions";
+import { Item } from "../lib/definitions";
 import { useFormState } from "react-dom";
-import { TShirtState, updateTShirt } from "../lib/actions";
+import { ItemState, updateItem } from "../lib/actions";
 import Image from "next/image";
 
-export default function EditTShirtForm({
+export default function EditForm({
   onCancel,
   onSuccessSave,
-  tShirt,
-  tShirts,
+  item,
+  items,
 }: {
   onCancel: () => void;
-  onSuccessSave: (success: boolean, tShirts: TShirt[]) => void;
-  tShirt: TShirt;
-  tShirts: TShirt[];
+  onSuccessSave: (success: boolean, items: Item[]) => void;
+  item: Item;
+  items: Item[];
 }) {
   const initialState = {
     message: null,
     errors: {},
     success: false,
-    tShirts: tShirts,
-    editId: tShirt.id,
+    items: items,
+    editId: item.id,
   };
 
-  const [state, dispatch] = useFormState<TShirtState, FormData>(
-    updateTShirt,
+  const [state, dispatch] = useFormState<ItemState, FormData>(
+    updateItem,
     initialState
   );
   const [file, setFile] = useState("");
 
   useEffect(() => {
     if (state.success) {
-      onSuccessSave(true, state.tShirts);
+      onSuccessSave(true, state.items);
     } else {
-      onSuccessSave(false, state.tShirts);
+      onSuccessSave(false, state.items);
     }
 
     return () => {};
   }, [state.success]);
 
   return (
-    <form key={tShirt.id} action={dispatch}>
+    <form action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <div className="flex items-center justify-center relative w-[75%]">
@@ -52,7 +52,7 @@ export default function EditTShirtForm({
               }}
             >
               <Image
-                src={file ? file : URL.createObjectURL(tShirt.file)}
+                src={file ? file : URL.createObjectURL(item.file)}
                 alt="Picture of the author"
                 sizes="250px"
                 fill
@@ -75,48 +75,44 @@ export default function EditTShirtForm({
             />
           </div>
         </figure>
-        <div id="url-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.file &&
-            state.errors.file.map((error: string) => (
-              <p className="mt-2 text-sm text-red-500">{error}</p>
-            ))}
-        </div>
+        <div className="divider"></div> 
         <div className="card-body">
-          <label htmlFor="name">
+          <label htmlFor="name" className="pb-4">
             <span>Name:</span>
             <input
               id="name"
               name="name"
               type="text"
-              placeholder="Name of t-shirt..."
+              placeholder="Name of item..."
               className="input input-bordered w-full max-w-xs"
               aria-describedby="name-error"
-              defaultValue={tShirt.name}
+              defaultValue={item.name}
             />
           </label>
           <div id="name-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name &&
               state.errors.name.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500">{error}</p>
+                <p className="text-sm text-red-500">{error}</p>
               ))}
           </div>
-          <label>
+          <div className="divider"></div> 
+          <label className="flex flex-col">
             <span>Description:</span>
-            <input
+            <textarea
               id="description"
               name="description"
-              type="text"
-              placeholder="Description of t-shirt..."
-              className="input input-bordered w-full max-w-xs"
-              defaultValue={tShirt.description}
-            />
+              className="textarea textarea-bordered"
+              placeholder="Description of item..."
+              defaultValue={item.description}
+            ></textarea>
           </label>
           <div id="description-error" aria-live="polite" aria-atomic="true">
             {state.errors?.description &&
               state.errors.description.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500">{error}</p>
+                <p className="text-sm text-red-500">{error}</p>
               ))}
           </div>
+          <div className="divider"></div> 
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={onCancel}>
               Cancel

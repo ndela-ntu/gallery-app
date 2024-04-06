@@ -1,4 +1,4 @@
-export interface TShirt {
+export interface Item {
     id: string;
     file: File;
     name: string;

@@ -33,10 +33,10 @@ export default function CreateForm({
     }
 
     return () => {};
-  }, [state.success]);
+  }, [state.success, state.items]);
 
   return (
-    <form action={dispatch} className="p-8 m-5">
+    <form key="new-item" action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <div className="flex items-center justify-center relative w-[75%]">

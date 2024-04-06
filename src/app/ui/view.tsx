@@ -12,7 +12,7 @@ export default function View({
   onEdit: () => void;
 }) {
   return (
-    <div className="card w-96 bg-base-100 shadow-xl p-8 m-5">
+    <div key={item.id} className="card w-96 bg-base-100 shadow-xl p-8 m-5">
       <figure className='py-4'>
         <div className=" w-[250px] h-[250px] flex items-center justify-center">
           <Image

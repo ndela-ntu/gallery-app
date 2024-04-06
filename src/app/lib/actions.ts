@@ -62,6 +62,7 @@ export async function createItem(prevState: ItemState, formData: FormData) {
       description: description,
     });
 
+
     return <ItemState>{
       message: "Successfully loaded a new item",
       errors: {},
@@ -113,6 +114,7 @@ export async function updateItem(prevState: ItemState, formData: FormData) {
     let newItems = prevState.items?.map((item) => {
       if (item.id == prevState.editId) {
         return <Item>{
+          id: uuidv4(),
           file: file,
           name: name,
           description: description,

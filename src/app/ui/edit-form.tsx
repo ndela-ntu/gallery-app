@@ -30,6 +30,7 @@ export default function EditForm({
   const [file, setFile] = useState("");
 
   useEffect(() => {
+    console.log(state.items);
     if (state.success) {
       onSuccessSave(true, state.items);
     } else {
@@ -37,10 +38,10 @@ export default function EditForm({
     }
 
     return () => {};
-  }, [state.success]);
+  }, [state.success, state.items]);
 
   return (
-    <form action={dispatch} className="p-8 m-5">
+    <form key={item.id} action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <div className="flex items-center justify-center relative w-[75%]">

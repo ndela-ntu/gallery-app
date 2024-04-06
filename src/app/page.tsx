@@ -39,7 +39,6 @@ export default function Page() {
           <div className="flex flex-row flex-wrap">
             {isAddNew && (
               <CreateForm
-                key={"add-new"}
                 onSuccessAdd={(success, items) => {
                   setIsAddNew(!success);
                   setDummyItems(items);

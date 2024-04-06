@@ -30,7 +30,6 @@ export default function EditForm({
   const [file, setFile] = useState("");
 
   useEffect(() => {
-    console.log(state.items);
     if (state.success) {
       onSuccessSave(true, state.items);
     } else {

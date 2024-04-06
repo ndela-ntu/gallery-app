@@ -1,5 +1,6 @@
 export interface TShirt {
-    url: string;
+    id: string;
+    file: File;
     name: string;
     description: string;
 }

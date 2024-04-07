@@ -36,32 +36,23 @@ export default function EditForm({
       onSuccessSave(false, state.items);
     }
 
-    return () => {};
-  }, [state, onSuccessSave]);
+    return () => {
+      console.log('Unmounted component 2')
+    };
+  }, [state]);
 
   return (
     <form action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <div className="flex items-center justify-center relative w-[75%]">
-            <div
-              style={{
-                position: "relative",
-                width: "250px",
-                height: "250px",
-              }}
-            >
-              <Image
-                src={file ? file : URL.createObjectURL(item.file)}
-                alt="Picture of the author"
-                sizes="250px"
-                fill
-                style={{
-                  objectFit: "contain",
-                }}
-                className="border-"
-              />
-            </div>
+            <Image
+              src={file ? file : URL.createObjectURL(item.file)}
+              alt="Image of item"
+              width={250}
+              height={250}
+            />
+
             <input
               type="file"
               id="url"
@@ -75,7 +66,7 @@ export default function EditForm({
             />
           </div>
         </figure>
-        <div className="divider"></div> 
+        <div className="divider"></div>
         <div className="card-body">
           <label htmlFor="name" className="pb-4">
             <span>Name:</span>
@@ -92,10 +83,12 @@ export default function EditForm({
           <div id="name-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name &&
               state.errors.name.map((error: string, i) => (
-                <p key={i} className="text-sm text-red-500">{error}</p>
+                <p key={i} className="text-sm text-red-500">
+                  {error}
+                </p>
               ))}
           </div>
-          <div className="divider"></div> 
+          <div className="divider"></div>
           <label className="flex flex-col">
             <span>Description:</span>
             <textarea
@@ -109,10 +102,12 @@ export default function EditForm({
           <div id="description-error" aria-live="polite" aria-atomic="true">
             {state.errors?.description &&
               state.errors.description.map((error: string, i) => (
-                <p key={i} className="text-sm text-red-500">{error}</p>
+                <p key={i} className="text-sm text-red-500">
+                  {error}
+                </p>
               ))}
           </div>
-          <div className="divider"></div> 
+          <div className="divider"></div>
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={onCancel}>
               Cancel

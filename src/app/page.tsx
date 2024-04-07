@@ -61,6 +61,7 @@ export default function Page() {
                         setDummyItems(items);
                       } else {
                         setIsEditState({ edit: !value, id: isEditState.id });
+                        setDummyItems(items);
                       }
                     }}
                     item={item}

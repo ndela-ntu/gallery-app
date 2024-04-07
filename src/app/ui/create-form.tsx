@@ -32,33 +32,18 @@ export default function CreateForm({
       onSuccessAdd(false, state.items);
     }
 
-    return () => {};
+    return () => {
+      console.log('Unmounted component 1')
+    };
   }, [state, onSuccessAdd]);
 
   return (
     <form action={dispatch} className="p-8 m-5">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
-          <div className="flex items-center justify-center relative w-[75%]">
+          <div className="flex items-center justify-center relative">
             {file ? (
-              <div
-                style={{
-                  position: "relative",
-                  width: "250px",
-                  height: "250px",
-                }}
-              >
-                <Image
-                  src={file}
-                  alt="Picture of the item"
-                  sizes="250px"
-                  fill
-                  style={{
-                    objectFit: "contain",
-                  }}
-                  className="border-"
-                />
-              </div>
+              <Image src={file} width={250} height={250} alt="Image of item" />
             ) : (
               <div className="w-[250px] h-[250px] flex items-center justify-center"></div>
             )}
@@ -75,14 +60,21 @@ export default function CreateForm({
             />
           </div>
         </figure>
-        <div className="divider"></div> 
-        <div className="px-9" id="url-error" aria-live="polite" aria-atomic="true">
+        <div className="divider"></div>
+        <div
+          className="px-9"
+          id="url-error"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {state.errors?.file &&
             state.errors.file.map((error: string, i) => (
-              <p key={i} className="text-sm text-red-500">{error}</p>
+              <p key={i} className="text-sm text-red-500">
+                {error}
+              </p>
             ))}
         </div>
-        <div className="card-body" >
+        <div className="card-body">
           <label htmlFor="name" className="pb-4">
             <span>Name:</span>
             <input
@@ -97,10 +89,12 @@ export default function CreateForm({
           <div id="name-error" aria-live="polite" aria-atomic="true">
             {state.errors?.name &&
               state.errors.name.map((error: string, i) => (
-                <p key={i} className="text-sm text-red-500">{error}</p>
+                <p key={i} className="text-sm text-red-500">
+                  {error}
+                </p>
               ))}
           </div>
-          <div className="divider"></div> 
+          <div className="divider"></div>
           <label className="flex flex-col">
             <span>Description:</span>
             <textarea
@@ -113,10 +107,12 @@ export default function CreateForm({
           <div id="description-error" aria-live="polite" aria-atomic="true">
             {state.errors?.description &&
               state.errors.description.map((error: string, i) => (
-                <p key={i} className="text-sm text-red-500">{error}</p>
+                <p key={i} className="text-sm text-red-500">
+                  {error}
+                </p>
               ))}
           </div>
-          <div className="divider"></div> 
+          <div className="divider"></div>
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={onCancel}>
               Cancel

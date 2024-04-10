@@ -15,21 +15,25 @@ export default function EditForm({
   item: Item;
   items: Item[];
 }) {
+
   const initialState = {
     message: null,
     errors: {},
     success: false,
     items: items,
-    editId: item.id,
   };
 
+  const updateItemWithId = updateItem.bind(null, item.id, items);
+
   const [state, dispatch] = useFormState<ItemState, FormData>(
-    updateItem,
+    updateItemWithId,
     initialState
   );
+
   const [file, setFile] = useState("");
 
   useEffect(() => {
+    console.log(state.items);
     if (state.success) {
       onSuccessSave(true, state.items);
     } else {

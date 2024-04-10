@@ -19,13 +19,17 @@ export default function CreateForm({
     success: false,
     items: items,
   };
+
+  const createItemWithItems = createItem.bind(null, items);
   const [state, dispatch] = useFormState<ItemState, FormData>(
-    createItem,
+    createItemWithItems,
     initialState
   );
+
   const [file, setFile] = useState("");
 
   useEffect(() => {
+    console.log(state.items);
     if (state.success) {
       onSuccessAdd(true, state.items);
     } else {

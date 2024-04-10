@@ -28,15 +28,15 @@ export type ItemState = {
   message?: string | null;
   success?: boolean;
   items: Item[];
-  editId?: string;
 };
 
-export async function deleteItem(
+export async function deleteItem(prevState: ItemState, formData: FormData) {}
+
+export async function createItem(
+  items: Item[],
   prevState: ItemState,
   formData: FormData
-) {}
-
-export async function createItem(prevState: ItemState, formData: FormData) {
+) {
   const validatedFields = CreateItem.safeParse({
     file: formData.get("url"),
     name: formData.get("name"),
@@ -48,20 +48,19 @@ export async function createItem(prevState: ItemState, formData: FormData) {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing Fields. Failed to Create Invoice",
       success: false,
-      items: prevState.items,
+      items: items,
     };
   }
 
   try {
     const { file, name, description } = validatedFields.data;
 
-    let newItems = prevState.items?.concat({
+    let newItems = items.concat({
       id: uuidv4(),
       file: file,
       name: name,
       description: description,
     });
-
 
     return <ItemState>{
       message: "Successfully loaded a new item",
@@ -74,25 +73,28 @@ export async function createItem(prevState: ItemState, formData: FormData) {
       message: "Database Error: Failed to Create Invoice.",
       errors: error,
       success: false,
-      items: prevState.items,
+      items: items,
     };
   }
 }
 
-export async function updateItem(prevState: ItemState, formData: FormData) {
-  let itemFile = prevState.items.find(
-    (item) => item.id == prevState.editId
-  )?.file;
+export async function updateItem(
+  id: string,
+  items: Item[],
+  prevState: ItemState,
+  formData: FormData
+) {
+  let itemFile = items.find((item) => item.id == id)?.file;
 
-  let formDataFile = formData.get('url');
+  let formDataFile = formData.get("url");
   let file: File | undefined;
 
   if (formDataFile instanceof File && formDataFile.size > 0) {
     file = formDataFile;
-  }else {
+  } else {
     file = itemFile;
   }
-  
+
   const validatedFields = UpdateItem.safeParse({
     file: file,
     name: formData.get("name"),
@@ -104,15 +106,15 @@ export async function updateItem(prevState: ItemState, formData: FormData) {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing Fields. Failed to create invoice",
       success: false,
-      items: prevState.items,
+      items: items,
     };
   }
 
   try {
     const { file, name, description } = validatedFields.data;
 
-    let newItems = prevState.items?.map((item) => {
-      if (item.id == prevState.editId) {
+    let newItems = items.map((item) => {
+      if (item.id == id) {
         return <Item>{
           id: item.id,
           file: file,
@@ -135,7 +137,7 @@ export async function updateItem(prevState: ItemState, formData: FormData) {
       message: "Database Error: Failed to update gallery",
       errors: error,
       success: false,
-      items: prevState.items,
+      items: items,
     };
   }
 }
